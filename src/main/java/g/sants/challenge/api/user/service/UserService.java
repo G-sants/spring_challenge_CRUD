@@ -14,22 +14,24 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<User> getAllUsers() {
+
         return userRepository.findAll();
     }
 
     public User getUser(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id " + id));
+                .orElseThrow(() -> new RuntimeException("Users not found with id " + id));
     }
 
     public User createUser(User user) {
+
         return userRepository.save(user);
     }
 
     public User updateUser(Long id, User userDetails) {
        try{
         User user = userRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("User not find with ide" + id));
+                .orElseThrow(()-> new RuntimeException("User not find with id" + id));
         if (user != null) {
             user.setName(userDetails.getName());
             user.setLastName(userDetails.getLastName());
@@ -38,12 +40,16 @@ public class UserService {
             return userRepository.save(user);
         }
         }catch (Exception e){
-            throw new RuntimeException("Error updating user"+e.getMessage());
+            throw new RuntimeException("Error updating user" + e.getMessage());
         }
         return null;
     }
 
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        }catch (Exception e) {
+            throw new RuntimeException("Error deleting user" + e.getMessage());
+        }
     }
 }
