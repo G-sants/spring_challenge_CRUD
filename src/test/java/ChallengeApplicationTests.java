@@ -2,19 +2,19 @@
 import g.sants.challenge.api.user.User;
 import g.sants.challenge.api.user.repository.UserRepository;
 import g.sants.challenge.api.user.service.UserService;
-import jakarta.persistence.Entity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
+
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 public class ChallengeApplicationTests {
@@ -28,6 +28,15 @@ public class ChallengeApplicationTests {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void createUserCreatesAnUser(){
+        User user = null;
+       userService.createUser(user);
+
+        List<User> users = Arrays.asList(user);
+        assertEquals(1,users.size());
     }
 
     @Test
@@ -60,6 +69,7 @@ public class ChallengeApplicationTests {
 
     @Test
     public void putUpdateEspecifiedUser(){
+
 
     }
 
