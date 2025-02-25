@@ -32,10 +32,9 @@ public class ChallengeApplicationTests {
 
     @Test
     public void createUserCreatesAnUser(){
-        User user = null;
-       userService.createUser(user);
+       userService.createUser();
 
-        List<User> users = Arrays.asList(user);
+        List<User> users = Arrays.asList();
         assertEquals(1,users.size());
     }
 
@@ -69,6 +68,9 @@ public class ChallengeApplicationTests {
 
     @Test
     public void putUpdateEspecifiedUser(){
+        User gabriel = new User(1L, "Gabriel", "Santos", 27, "gabriel@email.com");
+
+        userService.updateUser(1L,gabriel);
 
 
     }
