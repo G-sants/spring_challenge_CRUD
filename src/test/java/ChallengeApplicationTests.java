@@ -4,17 +4,21 @@ import g.sants.challenge.api.user.repository.UserRepository;
 import g.sants.challenge.api.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ChallengeApplicationTests {
@@ -32,10 +36,21 @@ public class ChallengeApplicationTests {
 
     @Test
     public void createUserCreatesAnUser(){
-       userService.createUser();
+        List<User> users = new ArrayList<>();
+       User user = new User();
+       when(userRepository.save(ArgumentMatchers.any(User.class))).thenAnswer(invocation ->{
+           User savedUser = invocation.getArgument(0);
+           users.add(savedUser);
+           return savedUser;
+       });
 
-        List<User> users = Arrays.asList();
+       User createdUser = userService.createUser(user);
+
         assertEquals(1,users.size());
+
+        verify(userRepository).save(user);
+
+        assertEquals(user,createdUser);
     }
 
     @Test
