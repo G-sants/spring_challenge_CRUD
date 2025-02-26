@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -47,6 +48,8 @@ public class UserService {
 
     public void deleteUser(Long id) {
         try {
+            Optional<User> user = Optional.ofNullable(userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not Found with this id: " + id)));
             userRepository.deleteById(id);
         }catch (Exception e) {
             throw new RuntimeException("Error deleting user" + e.getMessage());

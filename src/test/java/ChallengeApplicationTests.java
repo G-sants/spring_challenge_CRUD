@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -83,15 +83,33 @@ public class ChallengeApplicationTests {
 
     @Test
     public void putUpdateEspecifiedUser(){
-        User gabriel = new User(1L, "Gabriel", "Santos", 27, "gabriel@email.com");
+        long id = 1L;
+        User oldGabriel = new User(1L, "Gabriel", "Santos", 27, "gabriel@email.com");
+        User gabrielData = new User(null, "Gabriel","Alves",27,"g.alves@email.com");
 
-        userService.updateUser(1L,gabriel);
+        when(userRepository.findById(id)).thenReturn(Optional.of(oldGabriel));
+        when(userRepository.save(any(User.class))).thenReturn(oldGabriel);
 
+        User updateGabriel = userService.updateUser(id, gabrielData);
 
+        verify(userRepository).findById(id);
+        verify(userRepository).save(any(User.class));
+        assertEquals("Alves",updateGabriel.getLastName());
+        assertEquals("g.alves@email.com",updateGabriel.getEmail());
     }
 
     @Test
     public void deleteUserDeleteEspecifiedUser(){
+        long id = 1L;
+        User gabriel = new User(1L, "Gabriel", "Santos", 27, "gabriel@email.com");
+        User camilla = new User(2L, "Camilla", "Farias", 12, "camilla@email.com");
+
+        when(userRepository.findById(id)).thenReturn(Optional.of(gabriel));
+
+        userService.deleteUser(id);
+
+        verify(userRepository).findById(id);
+        verify(userRepository).deleteById(id);
 
     }
 
